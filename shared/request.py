@@ -1,5 +1,5 @@
 from flask import request
-from exceptions import InvalidRequest
+from shared.exceptions import InvalidRequest
 def Request(required_args:set=None):
     data = {}
     if request.is_json:

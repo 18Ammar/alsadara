@@ -22,5 +22,13 @@ class BaseModel(db.Model):
     def delete(self,*args,**kwargs):
         self.deleted = True
         db.session.commit()
+    def get(self):
+        return{
+            "id": self.id,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "deleted": self.deleted,
+            "documents": self.documents,
+            "updated_at":self.updated_at
+        }
     
 

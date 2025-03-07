@@ -11,7 +11,7 @@ from shared.response import messages
 load_dotenv(".env")
 
 def create_account_token(account:dict,remember=True,subject="login")->str:
-    assert {'id','user_name','phone_number','role'}.issubset(account.keys()),"Account must have id, email and role"
+    assert {'id','user_name','phone_number','roles'}.issubset(account.keys()),"Account must have id, email and role"
     payload={
         'iat':datetime.utcnow(),
         'exp':datetime.utcnow()+timedelta(days=30) if remember else datetime.utcnow()+timedelta(days=1),
@@ -44,6 +44,6 @@ def get_user_by_token(token:str,subject=None)->dict:
 
 
 def check_password(account,password):
-    if pbkdf2_sha256.verify(account.password,password):
+    if pbkdf2_sha256.verify(password, account.password):
         return True
     raise UnauthorizedAccount(messages["Invalid login credentials"])
