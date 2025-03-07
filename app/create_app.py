@@ -1,11 +1,12 @@
-from flask import Flask,Blueprint
-import os
+from flask import Flask,Blueprint,jsonify
 import dotenv
 from flask_compress import Compress
 from flask_cors import CORS
 from shared.database import db
 from controller.defaults import create_default
 from account import AccountBlueprint
+from shared.exceptions import NotAuthenticated,NotFound,UnauthorizedAccount,InvalidRequest
+
 dotenv.load_dotenv(".env")
 
 
@@ -21,7 +22,18 @@ def create_app():
     db.init_app(app)
     MainBlueprint = Blueprint('main','main','static')
     MainBlueprint.register_blueprint(AccountBlueprint,url_prefix='/account')
-
+    @MainBlueprint.errorhandler(NotAuthenticated)
+    @MainBlueprint.errorhandler(NotFound)
+    @MainBlueprint.errorhandler(UnauthorizedAccount)
+    @MainBlueprint.errorhandler(InvalidRequest)
+    def error_handler(error):
+        response={
+            "msg": error.msg,
+            "msg_ar": error.msg_ar
+        }
+        return jsonify(response, error.code)
+    
+    
     with app.app_context():
         db.create_all()
         create_default()

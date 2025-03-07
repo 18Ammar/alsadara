@@ -26,3 +26,8 @@ class UnauthorizedAccount(BaseException):
     def __init__(self, *args:object)->None:
         super().__init__(*args)
         self.code = 403
+        
+class NotLoggedIn(BaseException):
+    def __init__(self, *args:object)->None:
+        super().__init__(*args)
+        self.code = 405

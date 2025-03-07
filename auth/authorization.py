@@ -6,7 +6,7 @@ from datetime import datetime,timedelta
 from dotenv import load_dotenv
 import os
 from passlib.hash import pbkdf2_sha256
-from shared.exceptions import UnauthorizedAccount
+from shared.exceptions import UnauthorizedAccount,NotFound
 from shared.response import messages
 load_dotenv(".env")
 
@@ -36,7 +36,7 @@ def get_token_data(token:str, subject:str= None)->dict:
 def get_user_by_token(token:str,subject=None)->dict:
     data = get_token_data(token=token)
     try:
-        account =  get_account(data['account_id'])
+        account =  get_account(data['id'])
         return account
     except:
         raise Exception("this user is not exist")
@@ -47,3 +47,14 @@ def check_password(account,password):
     if pbkdf2_sha256.verify(password, account.password):
         return True
     raise UnauthorizedAccount(messages["Invalid login credentials"])
+
+
+def check_role(role,token):
+    data = get_token_data(token)
+    try:
+        account = get_account(id = data["id"])
+    except NotFound:
+        raise UnauthorizedAccount(messages["User not found"])
+    if role not in account.get_roles():
+        raise UnauthorizedAccount(messages["Unauthorized access"])
+    return True
