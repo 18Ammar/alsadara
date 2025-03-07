@@ -10,3 +10,4 @@ class InvalidRequest(BaseException):
     def __init__(self, *args:object)->None:
         super().__init__(*args)
         self.code = 400
+    
