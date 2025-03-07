@@ -7,16 +7,17 @@ from controller.defaults import create_default
 from account import AccountBlueprint
 from shared.exceptions import NotAuthenticated,NotFound,UnauthorizedAccount,InvalidRequest,NotLoggedIn
 from shared.response import messages
+import os
+
+
 dotenv.load_dotenv(".env")
-
-
 def create_app():
     app = Flask(__name__)
     Compress(app)
     CORS(app, resources={r"/api/*":{"origins":"*"}})
     app.config['CORS_HEADERS'] = 'Content-Type'
-    app.config['SECRET_KEY'] = "10ifv942jsdf&&&kjadw29iujkjefg0933fjij"
-    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:password@localhost:5432/alsadara"
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['PROPAGATE_EXCEPTIONS'] = True
     db.init_app(app)
