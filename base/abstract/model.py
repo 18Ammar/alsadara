@@ -14,6 +14,7 @@ class BaseModel(db.Model):
         try:
             result = db.session.add(self)
             db.session.commit()
+            db.session.refresh(self) 
             return result
         except Exception as e:
             db.session.rollback()
@@ -23,12 +24,13 @@ class BaseModel(db.Model):
         self.deleted = True
         db.session.commit()
     def get(self):
-        return{
+        return {
             "id": self.id,
-            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S") if self.created_at else None,
             "deleted": self.deleted,
             "documents": self.documents,
-            "updated_at":self.updated_at
+            # "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S") if self.updated_at else None
         }
+
     
 

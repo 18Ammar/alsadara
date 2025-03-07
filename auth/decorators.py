@@ -28,7 +28,6 @@ def required_login(role):
         @wraps(func)
         def wrapper(*args,**kwargs):
             token = request.headers.get("Authorization")
-            print(token)
             if not token:
                 raise NotLoggedIn(messages["You are not logged in, please login to access this"])
             user_role = check_role(role,token)

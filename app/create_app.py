@@ -5,8 +5,8 @@ from flask_cors import CORS
 from shared.database import db
 from controller.defaults import create_default
 from account import AccountBlueprint
-from shared.exceptions import NotAuthenticated,NotFound,UnauthorizedAccount,InvalidRequest
-
+from shared.exceptions import NotAuthenticated,NotFound,UnauthorizedAccount,InvalidRequest,NotLoggedIn
+from shared.response import messages
 dotenv.load_dotenv(".env")
 
 
@@ -26,6 +26,7 @@ def create_app():
     @MainBlueprint.errorhandler(NotFound)
     @MainBlueprint.errorhandler(UnauthorizedAccount)
     @MainBlueprint.errorhandler(InvalidRequest)
+    @MainBlueprint.errorhandler(NotLoggedIn)
     def error_handler(error):
         response={
             "msg": error.msg,
@@ -33,6 +34,14 @@ def create_app():
         }
         return jsonify(response, error.code)
     
+    @app.errorhandler(404)
+    def not_found_handler(*args):
+        return error_handler(NotFound(messages["Requested URL was not found"]))
+
+    # @app.errorhandler(405)
+    # def method_not_allowed_handler(*args):
+    #     return error_handler(MethodNotAllowed(messages["Method not allowed"]))
+
     
     with app.app_context():
         db.create_all()

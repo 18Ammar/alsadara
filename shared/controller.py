@@ -1,4 +1,4 @@
-
+from .exceptions import NotFound
 class MainController():
     def __init__(self,entity:object):
         self.entity = entity
@@ -10,7 +10,9 @@ class MainController():
     def get_one(self,**kwargs):
         record = self.entity.query.filter_by(**kwargs).first()
         if not record:
-            return "the requested {} with the given information {} not found".format(self.entity.__tablename__,",".join(["{}={}".format(k,v) for k,v in kwargs.items()]))
+             raise NotFound({
+             "en":"the requested {} with the given information {} not found".format(self.entity.__tablename__,",".join(["{}={}".format(k,v) for k,v in kwargs.items()]))
+             })
         return record
 
     

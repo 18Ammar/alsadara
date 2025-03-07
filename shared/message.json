@@ -13,15 +13,23 @@
     },
     "User not found":{
         "en": "User not found",
-        "ar": "المستخدم ير موجود"
+        "ar": "المستخدم غير موجود"
     },
     "Unauthorized access":{
         "en": "Unauthorized access",
-        "ar": "الدخول ير مصرح به"
+        "ar": "الدخول غير مصرح به"
     },
     "You are not authorized to access this endpoint":{
         "en": "You are not authorized to access this endpoint",
-        "ar": "ليس لديك الصلاية للوصول لى هذه الخطوط"
-    }
+        "ar": "ليس لديك الصلاية للوصول الى هذه الخاصية"
+    },
+    "Account creation failed":{
+        "en": "Account creation failed",
+        "ar": "عملية انشاء الحساب فشلت"
+    },
     
+    "Requested URL was not found":{
+        "en": "Requested URL was not found",
+        "ar": "الرابط المطلوب غير موجود"
+    }
 }
