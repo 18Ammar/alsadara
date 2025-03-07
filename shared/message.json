@@ -1,10 +1,10 @@
 {
-    "":{
-        "en":"",
-        "ar":""
+    "Login credential is invalid":{
+        "en": "Login credentials are not valid",
+        "ar": "المعلومات التي ادخلتها غير صحيحة"
     },
-    "":{
-
+    "Invalid login credentials": {
+        "en": "Invalid login credentials",
+        "ar": "المعلومات التي ادخلتها غير صحيحة"
     }
-
 }

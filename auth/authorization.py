@@ -1,6 +1,14 @@
 import jwt
+from jwt import ExpiredSignatureError
 from uuid import uuid4
 from account.controller import get_account
+from datetime import datetime,timedelta
+from dotenv import load_dotenv
+import os
+from passlib.hash import pbkdf2_sha256
+from shared.exceptions import UnauthorizedAccount
+from shared.response import messages
+load_dotenv(".env")
 
 def create_account_token(account:dict,remember=True,subject="login")->str:
     assert {'id','user_name','phone_number','role'}.issubset(account.keys()),"Account must have id, email and role"
@@ -12,7 +20,7 @@ def create_account_token(account:dict,remember=True,subject="login")->str:
         'jti':str(uuid4()),
         
     }
-    token = jwt.encode(payload,app.config['SECRET_KEY'],algorithm='HS256')
+    token = jwt.encode(payload,os.getenv('SECRET_KEY'),algorithm='HS256')
     return token
 
 def get_token_data(token:str, subject:str= None)->dict:
@@ -20,7 +28,7 @@ def get_token_data(token:str, subject:str= None)->dict:
     if token_type != "Bearer":
         raise Exception("Invalid token type")
     try:
-        data=jwt.decode(jwt=token,key=os.getenv("JWT_SECRET"), algorithms=["HS256"])
+        data=jwt.decode(jwt=token,key=os.getenv("SECRET_KEY"), algorithms=["HS256"])
     except ExpiredSignatureError:
         raise Exception("Expired token")
     return data
@@ -35,3 +43,7 @@ def get_user_by_token(token:str,subject=None)->dict:
 
 
 
+def check_password(account,password):
+    if pbkdf2_sha256.verify(account.password,password):
+        return True
+    raise UnauthorizedAccount(messages["Invalid login credentials"])

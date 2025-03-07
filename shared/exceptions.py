@@ -11,3 +11,18 @@ class InvalidRequest(BaseException):
         super().__init__(*args)
         self.code = 400
     
+
+class NotFound(BaseException):
+    def __init__(self, *args:object)->None:
+        super().__init__(*args)
+        self.code = 404
+
+class NotAuthenticated(BaseException):
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.code = 401
+
+class UnauthorizedAccount(BaseException):
+    def __init__(self, *args:object)->None:
+        super().__init__(*args)
+        self.code = 403
