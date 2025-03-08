@@ -16,8 +16,8 @@ def create_app():
     Compress(app)
     CORS(app, resources={r"/api/*":{"origins":"*"}})
     app.config['CORS_HEADERS'] = 'Content-Type'
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+    app.config['SECRET_KEY'] = "10ifv942jsdf&&&kjadw29iujkjefg0933fjij"
+    app.config['SQLALCHEMY_DATABASE_URI'] ="postgresql://avnadmin:AVNS_oj7KNyeNG1a07-byQ9W@alsadara-alsadara.d.aivencloud.com:13523/defaultdb?sslmode=require"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['PROPAGATE_EXCEPTIONS'] = True
     db.init_app(app)
